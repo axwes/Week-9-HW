@@ -1,0 +1,43 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "width": 800,
+    "height": 450,
+    "title": "Australia State by Visitors",
+    "projection": {"type": "mercator"},
+    "data": {
+      "url": "https://raw.githubusercontent.com/axwes/FIT3179/refs/heads/main/australia_state.json",
+      "format": {"type": "topojson", "feature": "STE_2021_AUST_GDA2020"}
+    },
+    "layer": [
+      {
+        "mark": {"type": "geoshape", "fill": "lightgray", "stroke": "white"}
+      },
+      {
+        "transform": [
+          {
+            "lookup": "properties.STE_NAME21",
+            "from": {
+              "data": {
+                "url": "https://raw.githubusercontent.com/axwes/FIT3179/refs/heads/main/tourism_data.csv"
+              },
+              "key": "State",
+              "fields": ["Number of Visitors in 2023"]
+            }
+          }
+        ],
+        "mark": {"type": "geoshape"},
+        "encoding": {
+          "color": {
+            "field": "Number of Visitors in 2023",
+            "type": "quantitative",
+            "title": "Number of Visitors",
+            "scale": {"scheme": "blues"}
+          },
+          "tooltip": [
+            {"field": "properties.STE_NAME21", "type": "nominal", "title": "State"},
+            {"field": "Number of Visitors in 2023", "type": "quantitative", "title": "Visitors"}
+          ]
+        }
+      }
+    ]
+  }
